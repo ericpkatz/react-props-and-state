@@ -1,0 +1,103 @@
+<html>
+  <head>
+      <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/2.0.1/faker.min.js" integrity="sha512-NgMcOVLu2D1hxj9My5vvouitrUkTOYuMvxdvLI/zWRsIxFN54/XrFRBZ/lkoIi2RwuSx0it6LIJzqjT2eF6a4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Faker/3.1.0/faker.min.js" integrity="sha512-/seDHxVfh1NvFUscAj8GsHQVZJvr2jjAoYsNL7As2FCaFHUHYIarl3sRCvVlFgyouVNiRgHIebyLKjpgd1SLDw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  </head>
+  <body>
+    <div id='root'>
+    </div>
+  <script type='text/babel'>
+
+
+    const Header = (props)=> {
+      const { addCompany, companies } = props;
+      return (
+        <div>
+          <h1>Welcome to Acme Companies ({ companies.length })</h1>
+          <button onClick={ addCompany } >+</button> 
+        </div>
+        
+      );
+    };
+
+    const CompanyList = ({ companies })=> {
+      return (
+          <ul>
+            {
+              companies.map( (company, idx) => {
+                return (
+                  <li key={ idx }>
+                    { company }
+                  </li>
+                );
+              })
+            }
+          </ul>
+      );
+    };
+
+    /*
+    const Stats = ({ companies })=> {
+      const stats = companies.reduce((acc, company)=> {
+          const letter = company.slice(0, 1);
+          acc[letter] = acc[letter] || 0;
+          acc[letter]++;
+          return acc;
+      }, {});
+
+      return (
+
+      );
+    };
+*/
+
+    const Stats = ({ companies }) => {
+      const stats = companies.reduce((acc, company)=> {
+          const letter = company.slice(0, 1);
+          acc[letter] = acc[letter] || 0;
+          acc[letter]++;
+          return acc;
+      }, {});
+      console.log(stats);
+      return (
+        <ul>
+          {
+            Object.entries(stats).map( entry => {
+              return (
+                <li>{ entry[0] } - { entry[1] }</li>
+              );
+            })
+          }
+        </ul>
+      );
+    }; 
+
+    class App extends React.Component{
+
+      constructor(){
+        super();
+        this.state = {
+          companies: [],
+        };
+        this.addCompany = this.addCompany.bind(this);
+      }
+      addCompany(){
+        this.setState({ companies: [...this.state.companies, faker.company.companyName()]});
+      }
+      render(){
+        return (
+          <div>
+            <Header addCompany={ this.addCompany } companies={ this.state.companies }/>
+            <Stats companies= { this.state.companies }/>
+            <CompanyList companies={ this.state.companies }/>
+          </div>
+        );
+      }
+    }
+    ReactDOM.render(<App />, document.querySelector('#root'));
+  </script>
+  </body>
+</html>

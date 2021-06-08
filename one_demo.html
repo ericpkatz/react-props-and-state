@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  </head>
+  <body>
+    <h1>One Demo.html</h1>
+    <div id='root'></div>
+    <script>
+      class App extends React.Component{
+        constructor(){
+          super();
+          this.state = {
+            num: Math.round(Math.random()*10)
+          };
+          setInterval(()=> {
+            this.setState({ num: Math.round(Math.random()*10)});
+          }, 100);
+        }
+        render(){
+          return React.createElement('h1', null, this.state.num);
+        }
+      }
+      const root = document.querySelector('#root');
+      ReactDOM.render(React.createElement(App), root);
+    </script>
+  </body>
+</html>

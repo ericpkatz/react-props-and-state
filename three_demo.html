@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  </head>
+  <body>
+    <div id='root'></div>
+  <script type='text/babel'>
+    const { render } = ReactDOM;
+    const { Component } = React;
+
+    class App extends Component{
+      constructor(){
+        super();
+        this.state = {
+          numbers: []
+        };
+        this.addNumber = this.addNumber.bind(this);
+      }
+      deleteNumber(idx){
+        const numbers = this.state.numbers.filter((_, _idx)=> _idx !== idx);
+        this.setState({ numbers });
+      }
+      addNumber(){
+        const num = Math.round(Math.random()* 10);
+        this.setState({ numbers: [...this.state.numbers, num]});
+      }
+      render(){
+        const { numbers } = this.state;
+      
+        return (
+          <div>
+            <button onClick={ this.addNumber }>+</button>
+            <ul>
+              {
+                numbers.map( (num, idx) => {
+                  return (
+                    <li key={ idx }>
+                      { num }
+                      <button onClick={()=> this.deleteNumber(idx)}>x</button>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          </div>
+        );
+      }
+    }
+
+    render(<div><App /></div>, document.querySelector('#root'));
+
+    
+  </script>
+  </body>
+</html>
